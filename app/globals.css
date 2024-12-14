@@ -1,0 +1,9 @@
+/* styles/globals.css */
+
+/* Import les styles communs de base */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import le thème actif */
+ @import './globals-luxe.css';

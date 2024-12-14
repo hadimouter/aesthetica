@@ -1,0 +1,61 @@
+
+
+@layer base {
+  :root {
+    /* Couleurs principales */
+    --background: 210 50% 98%;    /* Fond légèrement bleuté */
+    --foreground: 210 50% 10%;
+    
+    /* Palette Médicale */
+    --primary: 199 100% 42%;      /* Bleu médical #00A0DC */
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 199 100% 95%;
+    --primary-dark: 199 100% 32%;
+    
+    /* Accents verts */
+    --secondary: 174 100% 29%;    /* Vert médical #009688 */
+    --secondary-foreground: 0 0% 100%;
+    --secondary-light: 174 100% 95%;
+    --secondary-dark: 174 100% 24%;
+    
+    /* Tons neutres */
+    --muted: 210 40% 96%;
+    --muted-foreground: 210 40% 40%;
+    
+    /* Autres couleurs */
+    --accent: 199 100% 42%;
+    --accent-foreground: 0 0% 100%;
+    
+    /* États */
+    --success: 142 72% 29%;      /* Vert validation */
+    --warning: 32 95% 44%;       /* Orange avertissement */
+    --error: 0 72% 51%;          /* Rouge erreur */
+    
+    /* UI */
+    --border: 210 40% 90%;
+    --input: 210 40% 90%;
+    --ring: 199 100% 42%;
+    
+    /* Rayons de bordure */
+    --radius: 0.75rem;
+  }
+}
+
+/* Classes utilitaires */
+.glass-medical {
+  @apply bg-white/90 backdrop-blur-md border border-primary/10 shadow-sm;
+}
+
+.hover-medical {
+  @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/10;
+}
+
+.text-gradient-medical {
+  @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+}
+
+/* Variables personnalisées */
+:root {
+  --header-height: 5rem;
+  --max-width-content: 1400px;
+}

@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base Colors */
+    --background: 35 25% 98%;      /* Fond crème très subtil */
+    --foreground: 32 20% 12%;      /* Texte presque noir avec une touche de chaleur */
+
+    /* Luxury Accents */
+    --primary: 32 30% 25%;         /* Brun sophistiqué */
+    --primary-light: 32 30% 95%;   /* Version très claire */
+    --primary-dark: 32 30% 15%;    /* Version plus profonde */
+
+    /* Gold Accents */
+    --accent: 35 40% 65%;          /* Or subtil */
+    --accent-light: 35 40% 85%;    /* Or clair */
+    --accent-dark: 35 40% 45%;     /* Or foncé */
+
+    /* Subtle Tones */
+    --muted: 30 20% 96%;
+    --muted-foreground: 30 10% 40%;
+
+    /* Surface Colors */
+    --surface: 32 30% 99%;
+    --surface-foreground: 32 20% 12%;
+
+    /* UI Elements */
+    --border: 30 20% 90%;
+    --input: 30 20% 90%;
+    --ring: 32 30% 25%;
+
+    /* Radii */
+    --radius: 0.5rem;
+  }
+}
+
+/* Utility Classes */
+.glass-luxury {
+  @apply bg-white/90 backdrop-blur-md border border-accent/10 shadow-sm;
+}
+
+.hover-luxury {
+  @apply transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)];
+}
+
+.text-gradient-luxury {
+  @apply bg-gradient-to-r from-primary via-accent to-primary-dark bg-clip-text text-transparent;
+}
+
+/* Custom Animations */
+@keyframes luxuryFade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-luxury {
+  animation: luxuryFade 0.6s ease-out forwards;
+}
