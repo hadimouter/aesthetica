@@ -71,7 +71,7 @@ export function Services() {
         >
           <h2 className="text-3xl font-light text-primary mb-4">Nos Prestations</h2>
           <p className="text-primary/60 max-w-2xl mx-auto font-light">
-            Une gamme exclusive de soins d'exception, personnalisés selon vos attentes.
+            Une gamme exclusive de soins d&apos;exception, personnalisés selon vos attentes.
           </p>
         </motion.div>
 

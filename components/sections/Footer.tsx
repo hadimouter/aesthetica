@@ -15,7 +15,7 @@ const footerLinks = {
   informations: [
     { label: "À propos", href: "#" },
     { label: "Notre équipe", href: "#" },
-    { label: "Blog", href: "#" }, 
+    { label: "Blog", href: "#" },
     { label: "FAQ", href: "#" }
   ],
   legal: [
@@ -44,7 +44,7 @@ const Footer = () => {
           <div className="lg:col-span-1">
             <h3 className="text-2xl font-light text-primary mb-4">AESTHETICA</h3>
             <p className="text-primary/60 font-light mb-6 max-w-sm">
-              Votre centre d'excellence en chirurgie et médecine esthétique à Paris.
+              Votre centre d&apos;excellence en chirurgie et médecine esthétique à Paris.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
@@ -65,8 +65,8 @@ const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.services.map((link) => (
                 <li key={link.label}>
-                  <Link 
-                    href={link.href} 
+                  <Link
+                    href={link.href}
                     className="text-primary/60 hover:text-primary font-light text-sm transition-colors"
                   >
                     {link.label}
@@ -81,8 +81,8 @@ const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.informations.map((link) => (
                 <li key={link.label}>
-                  <Link 
-                    href={link.href} 
+                  <Link
+                    href={link.href}
                     className="text-primary/60 hover:text-primary font-light text-sm transition-colors"
                   >
                     {link.label}
@@ -112,12 +112,13 @@ const Footer = () => {
               {footerLinks.legal.map((link) => (
                 <Link
                   key={link.label}
-                  href={link.href}
+                  href={link.href} 
                   className="text-primary/40 hover:text-primary/60 text-sm font-light transition-colors"
                 >
                   {link.label}
                 </Link>
               ))}
+
             </div>
           </div>
 

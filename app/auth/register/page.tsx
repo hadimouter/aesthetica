@@ -15,7 +15,7 @@ export default function RegisterPage() {
             Créer un compte
           </h1>
           <p className="text-muted-foreground font-light">
-            Rejoignez-nous pour bénéficier d'un suivi personnalisé
+            Rejoignez-nous pour bénéficier d&apos;un suivi personnalisé
           </p>
         </div>
 
@@ -24,7 +24,7 @@ export default function RegisterPage() {
         </div>
 
         <p className="text-center text-sm text-muted-foreground">
-          Déjà un compte ?{" "}
+          Déjà un compte&nbsp;?{" "}
           <a href="/auth/login" className="text-primary hover:underline">
             Se connecter
           </a>
