@@ -14,11 +14,7 @@ export interface IAppointment extends mongoose.Document {
 }
 
 const AppointmentSchema = new mongoose.Schema({
-  userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
-    },
+
   firstName: {
     type: String,
     required: [true, 'Le prénom est requis'],
