@@ -1,4 +1,3 @@
-// pages/api/auth/register.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '@/lib/mongodb/connection';
 import User from '@/lib/models/User';

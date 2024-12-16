@@ -1,4 +1,3 @@
-// hooks/useNavigation.ts
 import { useEffect, useState } from 'react';
 
 export function useNavigation() {
@@ -10,7 +9,7 @@ export function useNavigation() {
       const scrollPos = window.scrollY + 100;
       
       sections.forEach((section) => {
-        const sectionElement = section as HTMLElement; // Cast to HTMLElement
+        const sectionElement = section as HTMLElement;
         const sectionTop = sectionElement.offsetTop;
         const sectionHeight = sectionElement.offsetHeight;
         

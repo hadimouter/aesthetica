@@ -1,4 +1,3 @@
-// lib/mongodb/models/Patient.ts
 import mongoose from 'mongoose';
 
 export interface IPatient extends mongoose.Document {

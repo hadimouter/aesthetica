@@ -1,4 +1,3 @@
-// lib/mongodb/models/contact.ts
 import mongoose from 'mongoose';
 
 export interface IContact extends mongoose.Document {
@@ -11,6 +10,7 @@ export interface IContact extends mongoose.Document {
 }
 
 const ContactSchema = new mongoose.Schema({
+  
     name: {
     type: String,
     required: [true, 'Le prénom est requis'],

@@ -1,4 +1,3 @@
-// components/sections/SocialProof.tsx
 "use client";
 
 import { motion } from "framer-motion";

@@ -1,4 +1,3 @@
-// app/layout.tsx
 import { Inter } from 'next/font/google';
 import { Toaster } from "@/components/ui/toaster";
 import AuthProvider from "@/providers/AuthProvider";

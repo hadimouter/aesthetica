@@ -1,37 +1,37 @@
-// components/dashboard/AppointmentList.tsx
 "use client";
 
 import { motion } from "framer-motion";
 import { Calendar, Clock, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const appointments = [
-  {
-    id: 1,
-    date: "15 Mars 2024",
-    time: "14:30",
-    type: "Consultation",
-    doctor: "Dr. Sophie Martin",
-    location: "Cabinet 3",
-    status: "confirmed"
-  },
-  {
-    id: 2,
-    date: "22 Mars 2024",
-    time: "10:00",
-    type: "Suivi post-opératoire",
-    doctor: "Dr. Sophie Martin",
-    location: "Cabinet 2",
-    status: "pending"
-  }
-];
+interface Appointment {
+  _id: string;
+  date: string;
+  time: string;
+  type: string;
+  doctor: string;
+  location: string;
+  status: 'confirmed' | 'pending';
+}
 
-export function AppointmentList() {
+interface AppointmentListProps {
+  appointments: Appointment[];
+}
+
+export function AppointmentList({ appointments }: AppointmentListProps) {
+  if (!appointments.length) {
+    return (
+      <div className="p-4 bg-gray-50 text-gray-600 rounded-lg text-center">
+        Aucun rendez-vous prévu
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       {appointments.map((appointment) => (
         <motion.div
-          key={appointment.id}
+          key={appointment._id}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="p-4 bg-white border border-primary/10 hover:border-primary/20 transition-colors"
@@ -74,6 +74,7 @@ export function AppointmentList() {
               variant="outline"
               size="sm"
               className="text-xs"
+              onClick={() => {/* Ajouter la logique de modification */}}
             >
               Modifier
             </Button>
@@ -81,6 +82,7 @@ export function AppointmentList() {
               variant="outline"
               size="sm"
               className="text-xs text-red-600 hover:text-red-700"
+              onClick={() => {/* Ajouter la logique d'annulation */}}
             >
               Annuler
             </Button>

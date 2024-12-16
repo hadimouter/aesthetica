@@ -1,4 +1,3 @@
-// components/sections/FAQ.tsx
 "use client";
 
 import { motion } from "framer-motion";

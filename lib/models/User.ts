@@ -1,4 +1,3 @@
-// lib/mongodb/models/User.ts
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 

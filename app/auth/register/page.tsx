@@ -1,4 +1,3 @@
-
 import { RegisterForm } from "@/components/auth/RegisterForm";
 import { Metadata } from "next";
 

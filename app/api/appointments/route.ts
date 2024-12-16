@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb/connection";
 import Appointment from "@/lib/models/Appointment";
