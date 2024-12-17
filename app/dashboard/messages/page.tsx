@@ -42,15 +42,18 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-4rem)]">
-      <div className="w-1/3 border-r overflow-y-auto">
+    <div className="flex flex-col lg:flex-row h-[calc(100vh-4rem)]">
+      {/* Sidebar Messages List */}
+      <div className="lg:w-1/3 w-full border-r overflow-y-auto">
         <MessagesList 
           messages={messages}
           onSelectMessage={setSelectedMessage}
         />
       </div>
+      
+      {/* Message Detail Section */}
       <div className="flex-1 overflow-y-auto bg-gray-50">
-        <MessageDetail message={selectedMessage} />
+        {selectedMessage && <MessageDetail message={selectedMessage} />}
       </div>
     </div>
   );

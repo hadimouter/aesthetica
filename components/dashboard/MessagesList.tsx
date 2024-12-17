@@ -36,29 +36,30 @@ export function MessagesList({ messages, onSelectMessage }: MessagesListProps) {
             onSelectMessage(message);
           }}
         >
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="font-medium text-gray-900">{message.object}</h3>
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
+            <h3 className="font-medium text-gray-900 text-base sm:text-lg">{message.object}</h3>
             <span className="text-sm text-gray-500">
               {format(new Date(message.createdAt), "d MMMM yyyy", { locale: fr })}
             </span>
           </div>
-          
-          <div className="mb-2 text-sm font-medium text-gray-600">
-            {message.name}
-          </div>
-          
-          <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-            <div className="flex items-center gap-1">
-              <Mail className="w-4 h-4" />
-              {message.email}
+
+          {/* Name */}
+          <div className="mb-2 text-sm font-medium text-gray-600">{message.name}</div>
+
+          {/* Contact details */}
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:gap-4 gap-2 text-sm text-gray-500">
+            <div className="flex items-center gap-2">
+              <Mail className="w-4 h-4 shrink-0" />
+              <span className="truncate">{message.email}</span>
             </div>
-            <div className="flex items-center gap-1">
-              <Phone className="w-4 h-4" />
-              {message.phone}
+            <div className="flex items-center gap-2">
+              <Phone className="w-4 h-4 shrink-0" />
+              <span className="truncate">{message.phone}</span>
             </div>
-            <div className="flex items-center gap-1">
-              <Calendar className="w-4 h-4" />
-              {format(new Date(message.createdAt), "HH:mm")}
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 shrink-0" />
+              <span>{format(new Date(message.createdAt), "HH:mm")}</span>
             </div>
           </div>
         </div>
