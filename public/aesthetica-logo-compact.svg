@@ -1,0 +1,21 @@
+<svg viewBox="0 0 280 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Logo circle -->
+  <circle cx="50" cy="50" r="30" fill="#f8f8f8" stroke="#c4a484" stroke-width="2"/>
+  
+  <!-- Stylized "A" -->
+  <path d="M35 70 L50 30 L65 70" fill="none" stroke="#c4a484" stroke-width="2"/>
+  <path d="M40 57 L60 57" stroke="#c4a484" stroke-width="2"/>
+  
+  <!-- Medical cross -->
+  <path d="M47.5 42.5 L52.5 42.5 M50 40 L50 45" stroke="#c4a484" stroke-width="1"/>
+  
+  <!-- Text -->
+  <text x="90" y="55" font-family="Arial" font-size="24" fill="#2f4f4f" font-weight="300">
+    AESTHETICA
+  </text>
+  
+  <!-- Tagline -->
+  <text x="90" y="75" font-family="Arial" font-size="10" fill="#666666">
+    CHIRURGIE ESTHÉTIQUE
+  </text>
+</svg>

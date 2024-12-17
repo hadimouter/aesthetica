@@ -29,7 +29,12 @@ export function AppointmentCard({ count, nextAppointment }: AppointmentCardProps
 
       <div className="mt-4 pt-4 border-t border-primary/10">
         <div className="text-sm text-primary/60">
-          Prochain RDV: {nextAppointment?.date || 'Aucun'}
+          Prochain RDV: {new Date(nextAppointment?.date || 'Aucun').toLocaleDateString('fr-FR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
+          
         </div>
       </div>
     </motion.div>

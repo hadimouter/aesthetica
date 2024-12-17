@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react';
 
-export interface Appointment {
+interface Appointment {
   _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  service: string;
   date: string;
   time: string;
-  type: string;
-  doctor: string;
-  location: string;
+  message?: string;
   status: 'confirmed' | 'pending';
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Document {

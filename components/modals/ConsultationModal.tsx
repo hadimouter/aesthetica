@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,9 +23,24 @@ const timeSlots = [
     "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"
 ];
 
+interface Appointment {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    service: string;
+    date: string;
+    time: string;
+    message?: string;
+    status: 'confirmed' | 'pending';
+}
+
 interface ConsultationModalProps {
     isOpen: boolean;
     onClose: () => void;
+    appointment?: Appointment | null;
+    onSuccess?: (appointment: Appointment) => void;
 }
 
 interface FormData {
@@ -39,46 +54,72 @@ interface FormData {
     message: string;
 }
 
-export function ConsultationModal({ isOpen, onClose }: ConsultationModalProps) {
-
+export function ConsultationModal({ isOpen, onClose, appointment, onSuccess }: ConsultationModalProps) {
     const { toast } = useToast();
     const [selectedDate, setSelectedDate] = useState<Date>();
     const [selectedTime, setSelectedTime] = useState<string>();
     const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<FormData>();
     const [selectedService, setSelectedService] = useState("");
 
+    useEffect(() => {
+        if (appointment) {
+            reset({
+                firstName: appointment.firstName,
+                lastName: appointment.lastName,
+                email: appointment.email,
+                phone: appointment.phone,
+                service: appointment.service,
+                message: appointment.message || ''
+            });
+            setSelectedDate(new Date(appointment.date));
+            setSelectedTime(appointment.time);
+            setSelectedService(appointment.service);
+        }
+    }, [appointment, reset]);
+
     const onSubmit = async (data: FormData) => {
         try {
-            const response = await fetch('/api/appointments', {
-                method: 'POST',
+            const url = appointment 
+                ? `/api/appointments/${appointment._id}`
+                : '/api/appointments';
+                
+            const response = await fetch(url, {
+                method: appointment ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     ...data,
                     date: selectedDate,
+                    time: selectedTime,
                 }),
             });
 
-            if (response.ok) {
-                toast({
-                    title: "Rendez-vous confirmé",
-                    description: "Vous recevrez un email de confirmation sous peu.",
-                });
-                 // Réinitialiser les champs du formulaire
-                 reset();
-                 setSelectedDate(undefined); // Réinitialiser la date sélectionnée
-                 setSelectedTime(""); // Réinitialiser l'heure sélectionnée
-                 setSelectedService(""); // Réinitialiser le service sélectionné
- 
-                onClose();
-            } else {
-                throw new Error('Erreur lors de la prise de rendez-vous');
+            if (!response.ok) {
+                throw new Error(appointment ? 'Erreur lors de la modification' : 'Erreur lors de la prise de rendez-vous');
             }
+
+            const updatedAppointment = await response.json();
+            
+            toast({
+                title: appointment ? "Rendez-vous modifié" : "Rendez-vous confirmé",
+                description: "Vous recevrez un email de confirmation sous peu.",
+            });
+
+            if (onSuccess) {
+                onSuccess(updatedAppointment);
+            }
+
+            reset();
+            setSelectedDate(undefined);
+            setSelectedTime("");
+            setSelectedService("");
+            onClose();
+
         } catch (error) {
             toast({
                 title: "Erreur",
-                description: "Un problème est survenu lors de la prise de rendez-vous.",
+                description: `Un problème est survenu lors de ${appointment ? 'la modification' : 'la prise'} du rendez-vous.`,
                 variant: "destructive",
             });
         }
@@ -91,12 +132,12 @@ export function ConsultationModal({ isOpen, onClose }: ConsultationModalProps) {
                     <div className="p-6">
                         <DialogHeader>
                             <DialogTitle className="text-2xl font-light text-primary">
-                                Prendre rendez-vous
+                                {appointment ? 'Modifier le rendez-vous' : 'Prendre rendez-vous'}
                             </DialogTitle>
                         </DialogHeader>
 
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-6">
-                            {/* Informations personnelles */}
+
                             <div className="space-y-4">
                                 <h3 className="text-sm font-medium text-primary">Informations personnelles</h3>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -155,7 +196,7 @@ export function ConsultationModal({ isOpen, onClose }: ConsultationModalProps) {
                                     value={selectedService}
                                     onValueChange={(value) => {
                                         setSelectedService(value);
-                                        setValue('service', value); // Met à jour react-hook-form
+                                        setValue('service', value);
                                     }}
                                 >
                                     <SelectTrigger className="h-12">
@@ -191,7 +232,6 @@ export function ConsultationModal({ isOpen, onClose }: ConsultationModalProps) {
                                     />
                                 </div>
 
-                                {/* Remplacer la section des horaires par : */}
                                 {selectedDate && (
                                     <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mt-4">
                                         {timeSlots.map((time) => (
@@ -200,11 +240,11 @@ export function ConsultationModal({ isOpen, onClose }: ConsultationModalProps) {
                                                 type="button"
                                                 onClick={() => {
                                                     setSelectedTime(time);
-                                                    setValue('time', time); // Utiliser setValue de react-hook-form
+                                                    setValue('time', time);
                                                 }}
                                                 className={`p-2 text-sm border rounded-lg transition-colors ${selectedTime === time
-                                                    ? "bg-primary text-white border-primary"
-                                                    : "border-primary/10 hover:border-primary/20"
+                                                        ? "bg-primary text-white border-primary"
+                                                        : "border-primary/10 hover:border-primary/20"
                                                     }`}
                                             >
                                                 {time}
@@ -238,7 +278,7 @@ export function ConsultationModal({ isOpen, onClose }: ConsultationModalProps) {
                                     type="submit"
                                     className="h-12 px-6"
                                 >
-                                    Confirmer
+                                    {appointment ? 'Modifier' : 'Confirmer'}
                                 </Button>
                             </div>
                         </form>

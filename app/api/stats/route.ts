@@ -7,6 +7,7 @@ import Appointment from "@/lib/models/Appointment";
 import Document from "@/lib/models/Document";
 import Activity from "@/lib/models/Activity";
 import MedicalRecord from "@/lib/models/MedicalRecord";
+import User from "@/lib/models/User";
 
 // Types pour les modèles
 interface UserSession {
@@ -20,16 +21,27 @@ interface UserSession {
 export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions) as UserSession | null;
-    
-    if (!session?.user?.id) {
+
+    if (!session?.user?.email) {
       return NextResponse.json(
-        { error: "Non autorisé" }, 
+        { error: "Non autorisé" },
         { status: 401 }
       );
     }
 
     await connectDB();
-    const userId = session.user.id;
+    const userEmail = session.user.email;
+    // Trouver d'abord l'utilisateur par email
+    const user = await User.findOne({ email: userEmail });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Utilisateur non trouvé" },
+        { status: 404 }
+      );
+    }
+
+    const userId = user._id;
 
     const [
       appointments,
@@ -37,7 +49,9 @@ export async function GET(request: Request) {
       medicalRecords,
       activities
     ] = await Promise.all([
-      Appointment.find({ userId }).sort({ date: 1 }).limit(5),
+      // Pour Appointment, on utilise directement l'email
+      Appointment.find({ email: userEmail }).sort({ date: 1 }).limit(5),
+      // Pour les autres modèles, on utilise toujours userId
       Document.find({ userId }).sort({ createdAt: -1 }).limit(5),
       MedicalRecord.find({ userId }).countDocuments(),
       Activity.find({ userId }).sort({ createdAt: -1 }).limit(7)

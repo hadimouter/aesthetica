@@ -26,7 +26,7 @@ export function FounderNote() {
           <motion.div
             {...defaultMotionProps}
             initial={{ opacity: 0, x: -20 }}
-            className="relative aspect-[3/4] overflow-hidden"
+            className="relative aspect-[3/4] overflow-hidden hidden sm:block"
           >
             <div className="absolute inset-0 border border-accent/10" />
             <Image

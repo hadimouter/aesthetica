@@ -1,0 +1,24 @@
+<svg viewBox="0 0 600 315" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="600" height="315" fill="#ffffff"/>
+  
+  <!-- Logo circle -->
+  <circle cx="200" cy="157.5" r="45" fill="#f8f8f8" stroke="#c4a484" stroke-width="3"/>
+  
+  <!-- Stylized "A" -->
+  <path d="M177.5 187.5 L200 127.5 L222.5 187.5" fill="none" stroke="#c4a484" stroke-width="3"/>
+  <path d="M185 170 L215 170" stroke="#c4a484" stroke-width="3"/>
+  
+  <!-- Medical cross -->
+  <path d="M195 145 L205 145 M200 140 L200 150" stroke="#c4a484" stroke-width="1.5"/>
+  
+  <!-- Text -->
+  <text x="260" y="165" font-family="Arial" font-size="36" fill="#2f4f4f" font-weight="300">
+    AESTHETICA
+  </text>
+  
+  <!-- Tagline -->
+  <text x="260" y="190" font-family="Arial" font-size="14" fill="#666666">
+    CENTRE DE CHIRURGIE ESTHÉTIQUE · PARIS
+  </text>
+</svg>

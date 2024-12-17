@@ -1,14 +1,18 @@
+// @ts-nocheck
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb/connection";
 import Appointment from "@/lib/models/Appointment";
 import { sendAppointmentConfirmation } from "@/lib/mail";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import User from "@/lib/models/User";
 
 export async function POST(request: Request) {
   try {
     await connectDB();
 
     const body = await request.json();
-    
+
     // Créer le rendez-vous
     const appointment = await Appointment.create(body);
 
@@ -27,3 +31,4 @@ export async function POST(request: Request) {
     );
   }
 }
+

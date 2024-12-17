@@ -9,7 +9,7 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     
-    // Créer le rendez-vous
+    
     const contact = await Contact.create(body);
 
     // Envoyer les emails

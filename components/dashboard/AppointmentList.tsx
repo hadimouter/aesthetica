@@ -1,17 +1,23 @@
 "use client";
-
-import { motion } from "framer-motion";
-import { Calendar, Clock, MapPin } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Calendar, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ConsultationModal } from "../modals/ConsultationModal";
+import { toast } from "react-hot-toast";
 
 interface Appointment {
   _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  service: string;
   date: string;
   time: string;
-  type: string;
-  doctor: string;
-  location: string;
+  message?: string;
   status: 'confirmed' | 'pending';
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface AppointmentListProps {
@@ -19,76 +25,127 @@ interface AppointmentListProps {
 }
 
 export function AppointmentList({ appointments }: AppointmentListProps) {
-  if (!appointments.length) {
-    return (
-      <div className="p-4 bg-gray-50 text-gray-600 rounded-lg text-center">
-        Aucun rendez-vous prévu
-      </div>
-    );
-  }
+  const [currentAppointments, setAppointments] = useState<Appointment[]>(appointments);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
+  // Synchroniser l'état avec les props
+  useEffect(() => {
+    if (appointments) {
+      setAppointments(appointments);
+      console.log("Données reçues :", appointments);
+    }
+  }, [appointments]);
+  const handleDelete = async (appointmentId: string) => {
+    if (!confirm("Êtes-vous sûr de vouloir annuler ce rendez-vous ?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/appointments/${appointmentId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) throw new Error("Erreur lors de l'annulation");
+
+      setAppointments(currentAppointments.filter(apt => apt._id !== appointmentId));
+      toast.success("Rendez-vous annulé avec succès");
+    } catch (error) {
+      toast.error("Erreur lors de l'annulation du rendez-vous");
+    }
+  };
+
+  const handleAppointmentUpdated = (updatedAppointment: Appointment) => {
+    setAppointments(currentAppointments.map(apt =>
+      apt._id === updatedAppointment._id ? updatedAppointment : apt
+    ));
+  };
 
   return (
     <div className="space-y-4">
-      {appointments.map((appointment) => (
-        <motion.div
-          key={appointment._id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="p-4 bg-white border border-primary/10 hover:border-primary/20 transition-colors"
-        >
-          <div className="flex items-start justify-between">
-            <div className="space-y-1">
-              <div className="font-medium text-primary">
-                {appointment.type}
+      {currentAppointments.length === 0 ? (
+        <div className="p-4 bg-gray-50 text-gray-600 rounded-lg text-center">
+          Aucun rendez-vous prévu
+        </div>
+      ) : (
+        currentAppointments.map((appointment) => (
+          <div
+            key={appointment._id}
+            className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:border-primary/20 transition-colors"
+          >
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="font-medium text-primary">
+                  {appointment.service}
+                </h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  {appointment.firstName} {appointment.lastName}
+                </p>
               </div>
-              <div className="text-sm text-muted-foreground">
-                avec {appointment.doctor}
+              <div className={`px-2 py-1 text-xs rounded ${appointment.status === 'confirmed'
+                  ? 'bg-green-50 text-green-600'
+                  : 'bg-yellow-50 text-yellow-600'
+                }`}>
+                {appointment.status === 'confirmed' ? 'Confirmé' : 'En attente'}
               </div>
             </div>
-            <div className={`px-2 py-1 text-xs rounded ${
-              appointment.status === 'confirmed' 
-                ? 'bg-green-50 text-green-600'
-                : 'bg-yellow-50 text-yellow-600'
-            }`}>
-              {appointment.status === 'confirmed' ? 'Confirmé' : 'En attente'}
-            </div>
-          </div>
 
-          <div className="mt-4 flex items-center gap-4 text-sm text-primary/60">
-            <div className="flex items-center gap-1">
-              <Calendar className="w-4 h-4" />
-              {appointment.date}
+            <div className="mt-4 flex flex-wrap gap-4 text-sm text-gray-600">
+              <div className="flex items-center gap-1">
+                <Calendar className="w-4 h-4" />
+                {new Date(appointment.date).toLocaleDateString('fr-FR', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </div>
+              <div className="flex items-center gap-1">
+                <Clock className="w-4 h-4" />
+                {appointment.time}
+              </div>
             </div>
-            <div className="flex items-center gap-1">
-              <Clock className="w-4 h-4" />
-              {appointment.time}
-            </div>
-            <div className="flex items-center gap-1">
-              <MapPin className="w-4 h-4" />
-              {appointment.location}
-            </div>
-          </div>
 
-          <div className="mt-4 flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-xs"
-              onClick={() => {/* Ajouter la logique de modification */}}
-            >
-              Modifier
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-xs text-red-600 hover:text-red-700"
-              onClick={() => {/* Ajouter la logique d'annulation */}}
-            >
-              Annuler
-            </Button>
+            <div className="mt-4 flex gap-2">
+              {appointment.status === 'pending' && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-xs"
+                  onClick={() => {
+                    setSelectedAppointment(appointment);
+                    setIsModalOpen(true);
+                  }}
+                >
+                  Modifier
+                </Button>
+              )}
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-xs text-red-600 hover:text-red-700"
+                onClick={() => handleDelete(appointment._id)}
+              >
+                Annuler
+              </Button>
+            </div>
           </div>
-        </motion.div>
-      ))}
+        ))
+      )}
+
+      {isModalOpen && (
+        <ConsultationModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedAppointment(null);
+          }}
+          appointment={selectedAppointment}
+          onSuccess={(updatedAppointment) => {
+            handleAppointmentUpdated(updatedAppointment);
+            setIsModalOpen(false);
+            setSelectedAppointment(null);
+          }}
+        />
+      )}
     </div>
   );
 }
