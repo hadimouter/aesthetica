@@ -11,6 +11,7 @@ import { FAQ } from "@/components/sections/FAQ";
 import Footer from "@/components/sections/Footer";
 import { FounderNote } from "@/components/sections/FounderNote";
 import { ToastProvider } from "@/components/ui/toast";
+import ChatButton from "@/components/sections/ChatButton";
 
 export default function Home() {
   return (
@@ -54,6 +55,7 @@ export default function Home() {
           <FAQ />
           <Contact />
         </main>
+        <ChatButton />
         <Footer />
       </ToastProvider>
     </>
